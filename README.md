@@ -1,2 +1,3 @@
-# arm-reference
-Commonly used ARM Templates
+# ARm Template Reference
+
+1. [Basic ARM Template](basic-template.md)

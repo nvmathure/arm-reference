@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location" : {
+      "type": "string"
+    },
+    "name" : {
+      "type": "string"
+    },
+    "administratorLogin" : {
+      "type": "string",
+      "defaultValue": "[concat('l', uniqueString(resourceGroup().id, '9A08DDB9-95A1-495F-9263-D89738ED4205'))]"
+    },
+    "administratorLoginPassword" : {
+      "type": "securestring",
+      "defaultValue": "[concat('P', uniqueString(resourceGroup().id, '224F5A8B-51DB-46A3-A7C8-59B0DD584A41'), 'x', '!')]"
+    }
+  },
+  "resources": [
+    {
+      "name": "[parameters('name')]",
+      "location" : "[parameters('location')]",
+      "type": "Microsoft.DBforMySQL/servers",
+      "apiVersion": "2017-12-01",
+      "properties": {
+        "version": "5.7",
+        "createMode": "Default",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "storageProfile": {
+          "storageMB": "5120",
+          "backupRetentionDays": 7,
+          "geoRedundantBackup": "Disabled",
+          "storageAutoGrow": "Enabled"
+      },
+      "infrastructureEncryption": "Disabled"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "sku": {
+        "name": "B_Gen5_1",
+        "tier": "Basic",
+        "capacity" : 1,
+        "family": "Gen5",
+        "size": 5120
+      }
+    }
+  ],
+  "outputs": {
+    "administratorLogin": {
+      "type": "string",
+      "value": "[parameters('administratorLogin')]"
+    },
+    "administratorLoginPassword": {
+      "type": "string",
+      "value": "[parameters('administratorLoginPassword')]"
+    }
+  }
+}
